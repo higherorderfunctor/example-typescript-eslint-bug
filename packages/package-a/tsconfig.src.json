@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["./src"],
+  "references": [],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "tsBuildInfoFile": "./.tsbuildinfo/src.tsbuildinfo",
+    "types": ["jsdom", "vite/client"]
+  }
+}

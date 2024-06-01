@@ -1,0 +1,32 @@
+{
+  "name": "example-typescript-eslint-bug",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "pnpm": {
+    "patchedDependencies": {
+      "@typescript-eslint/typescript-estree@7.11.0": "patches/@typescript-eslint__typescript-estree@7.11.0.patch"
+    },
+    "overrides": {
+      "@typescript-eslint/eslint-plugin": "$typescript-eslint",
+      "@typescript-eslint/parser": "$typescript-eslint",
+      "@typescript-eslint/scope-manager": "$typescript-eslint",
+      "@typescript-eslint/type-utils": "$typescript-eslint",
+      "@typescript-eslint/types": "$typescript-eslint",
+      "@typescript-eslint/typescript-estree": "$typescript-eslint",
+      "@typescript-eslint/utils": "$typescript-eslint",
+      "@typescript-eslint/sitor-keys": "$typescript-eslint"
+    }
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.11.0",
+    "vue-eslint-parser": "^9.4.3",
+    "vue-tsc": "^2.0.19"
+  }
+}
