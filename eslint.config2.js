@@ -15,7 +15,7 @@ const overrides = {
       warnOnUnsupportedTypeScriptVersion: false,
       extraFileExtensions: ['.vue'],
       tsconfigRootDir: import.meta.dirname,
-      EXPERIMENTAL_useProjectService: {
+      projectService: {
         defaultProject: './tsconfig.eslint.json'
       }
     }

@@ -1,36 +1,18 @@
 diff --git a/dist/create-program/createProjectService.js b/dist/create-program/createProjectService.js
-index cf4185511027b727ac8f53dc2504df9abf6d657f..05094e87c65f2c1ec6603a3efaafbb1be515eeca 100644
+index c1603e1d23fa95616a8ea7b3a742c90239e991e0..8d6c28c4033120ad8a756f2d4919fa420f84cc9a 100644
 --- a/dist/create-program/createProjectService.js
 +++ b/dist/create-program/createProjectService.js
-@@ -12,12 +12,14 @@ const doNothing = () => { };
- const createStubFileWatcher = () => ({
-     close: doNothing,
- });
--function createProjectService(optionsRaw, jsDocParsingMode) {
-+function createProjectService(optionsRaw, jsDocParsingMode, extraFileExtensions) {
-     const options = typeof optionsRaw === 'object' ? optionsRaw : {};
-     (0, validateDefaultProjectForFilesGlob_1.validateDefaultProjectForFilesGlob)(options);
+@@ -18,7 +18,9 @@ function createProjectService(optionsRaw, jsDocParsingMode) {
      // We import this lazily to avoid its cost for users who don't use the service
      // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
+     // eslint-disable-next-line @typescript-eslint/no-require-imports
 +    const fs = require('fs');
      const tsserver = require('typescript/lib/tsserverlibrary');
 +    const { CORE_COMPILER_OPTIONS } = require('./shared');
      // TODO: see getWatchProgramsForProjects
      // We don't watch the disk, we just refer to these when ESLint calls us
      // there's a whole separate update pass in maybeInvalidateProgram at the bottom of getWatchProgramsForProjects
-@@ -50,22 +52,46 @@ function createProjectService(optionsRaw, jsDocParsingMode) {
-         session: undefined,
-         jsDocParsingMode,
-     });
-+    service.setHostConfiguration({
-+        extraFileExtensions: extraFileExtensions.map(
-+            (extension) => ({
-+                extension,
-+                isMixedContent: false,
-+                scriptKind: tsserver.ScriptKind.Deferred
-+              })
-+        )
-+    })
+@@ -54,19 +56,34 @@ function createProjectService(optionsRaw, jsDocParsingMode) {
      if (options.defaultProject) {
          let configRead;
          try {
@@ -73,26 +55,9 @@ index cf4185511027b727ac8f53dc2504df9abf6d657f..05094e87c65f2c1ec6603a3efaafbb1b
 +        service.setCompilerOptionsForInferredProjects(configRead.options);
      }
      return {
-         allowDefaultProjectForFiles: options.allowDefaultProjectForFiles,
-diff --git a/dist/parseSettings/createParseSettings.js b/dist/parseSettings/createParseSettings.js
-index 9aaf36f12699fd92a699b8704fc8574a8d6688fa..f3ee1b4f971d653bb3555ff9b43de696bf25c68b 100644
---- a/dist/parseSettings/createParseSettings.js
-+++ b/dist/parseSettings/createParseSettings.js
-@@ -76,7 +76,7 @@ function createParseSettings(code, options = {}) {
-         codeFullText,
-         comment: options.comment === true,
-         comments: [],
--        DEPRECATED__createDefaultProgram: 
-+        DEPRECATED__createDefaultProgram:
-         // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-         options.DEPRECATED__createDefaultProgram === true,
-         debugLevel: options.debugLevel === true
-@@ -90,7 +90,7 @@ function createParseSettings(code, options = {}) {
-             (options.project &&
-                 options.EXPERIMENTAL_useProjectService !== false &&
-                 process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true')
--            ? (TSSERVER_PROJECT_SERVICE ??= (0, createProjectService_1.createProjectService)(options.EXPERIMENTAL_useProjectService, jsDocParsingMode))
-+            ? (TSSERVER_PROJECT_SERVICE ??= (0, createProjectService_1.createProjectService)(options.EXPERIMENTAL_useProjectService, jsDocParsingMode, options.extraFileExtensions))
-             : undefined,
-         EXPERIMENTAL_useSourceOfProjectReferenceRedirect: options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
-         extraFileExtensions: Array.isArray(options.extraFileExtensions) &&
+         allowDefaultProject: options.allowDefaultProject,
+@@ -77,3 +94,4 @@ function createProjectService(optionsRaw, jsDocParsingMode) {
+ }
+ exports.createProjectService = createProjectService;
+ //# sourceMappingURL=createProjectService.js.map
++

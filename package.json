@@ -8,7 +8,7 @@
   ],
   "pnpm": {
     "patchedDependencies": {
-      "@typescript-eslint/typescript-estree@7.11.0": "patches/@typescript-eslint__typescript-estree@7.11.0.patch"
+      "@typescript-eslint/typescript-estree@8.0.0-alpha.24": "patches/@typescript-eslint__typescript-estree@8.0.0-alpha.24.patch"
     },
     "overrides": {
       "@typescript-eslint/eslint-plugin": "$typescript-eslint",
@@ -25,7 +25,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.26.0",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.11.0",
+    "typescript-eslint": "rc-v8",
     "vue-eslint-parser": "^9.4.3",
     "vue-tsc": "^2.0.19"
   }
